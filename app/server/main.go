@@ -19,6 +19,7 @@ func main() {
 	r.Use(CORSMiddleware)
 	r.HandleFunc("/signup", SignUp).Methods("POST")
 	r.HandleFunc("/login", Login).Methods("POST")
+	r.HandleFunc("/api/save_detail", RequireAuth(PostSaveDetail)).Methods("POST")
 
 	r.HandleFunc("/api/categories", RequireAuth(GetCategories)).Methods("GET")
 

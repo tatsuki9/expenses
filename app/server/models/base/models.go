@@ -1,4 +1,4 @@
-package models
+package base
 
 import (
 	"database/sql"
@@ -16,7 +16,7 @@ var database Database
 var once sync.Once
 var err error
 
-func getInstance() *Database {
+func GetInstance() *Database {
 
 	once.Do(func(){
 		dbinfo := os.Getenv("DATABASE_URL")
@@ -51,7 +51,7 @@ func (db Database) prepare(query string) (statement *sql.Stmt) {
 	return statement
 }
 
-func (db Database) query(query string, arguments ...interface{}) (row *sql.Rows) {
+func (db Database) Query(query string, arguments ...interface{}) (row *sql.Rows) {
 	rows ,err := db.db.Query(query, arguments...)
 	if err != nil {
 		log.Println(err)
@@ -60,7 +60,7 @@ func (db Database) query(query string, arguments ...interface{}) (row *sql.Rows)
 	return rows
 }
 
-func singleQuery(sql string, args ...interface{}) error {
+func SingleQuery(sql string, args ...interface{}) error {
 	SQL := database.prepare(sql)
 	tx  := database.begin()
 	_, err := tx.Stmt(SQL).Exec(args...)

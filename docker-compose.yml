@@ -2,7 +2,7 @@ version: '2'
 services:
   app:
     image: centos/angular-typescript-tutorial
-    container_name: angular-typescript-tutorial-app
+    container_name: expenses-app
     tty: true
     ports:
       - 4200:4200
@@ -15,8 +15,9 @@ services:
     privileged: true
     command: /sbin/init
   db:
+#    image: project-first/mysql
     image: project-first/mysql
-    container_name: angular-typescript-tutorial-db
+    container_name: expenses-db
     environment:
       MYSQL_ROOT_PASSWORD: 'root'
     ports:

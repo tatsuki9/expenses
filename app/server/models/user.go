@@ -2,6 +2,7 @@ package models
 
 import (
 	"time"
+	"expenses/models/base"
 )
 
 type User struct {
@@ -15,14 +16,14 @@ type User struct {
 func CreateUser(username string, email string, password string) error {
 	sql := `INSERT INTO users(name, email, password, created) VALUES(?, ?, ?, NOW())`
 
-	err := singleQuery(sql, username, email, password)
+	err := base.SingleQuery(sql, username, email, password)
 	return err
 }
 
 func GetUserByEmail(email string) (*User, error) {
 	var user User
 	sql  := `SELECT * FROM users WHERE email = ?`
-	rows := getInstance().query(sql, email)
+	rows := base.GetInstance().Query(sql, email)
 	defer rows.Close()
 
 	if rows.Next() {

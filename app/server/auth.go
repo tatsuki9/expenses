@@ -26,12 +26,6 @@ type signUpStruct struct {
 	Password string `json:password`
 }
 
-func GetCategories(w http.ResponseWriter, r *http.Request, id int) {
-	log.Println("[GetCategories] start")
-	log.Println("[GetCategories] user_id: ")
-	log.Println(id)
-}
-
 func RequireAuth(handler func (w http.ResponseWriter, r *http.Request, id int)) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request){
 		//cookie, err := r.Cookie("session")
@@ -52,15 +46,14 @@ func RequireAuth(handler func (w http.ResponseWriter, r *http.Request, id int)) 
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-
 	var loginData loginStruct
 	var statusCode = http.StatusOK
 	err := json.NewDecoder(r.Body).Decode(&loginData)
 	defer r.Body.Close()
 
 	if err != nil {
-		log.Println("[Login/Error] during parsing userdata", err)
-		AnswerSomethingError(w, "[Error] during parsing userdata", http.StatusBadRequest, true)
+		log.Println("[Login/Error] during parsing requestData", err)
+		AnswerSomethingError(w, "[Error] during parsing requestData", http.StatusBadRequest, true)
 		return
 	}
 
@@ -112,8 +105,8 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
 	if err != nil {
-		log.Println("[SignUp/Error] during parsing userdata", err)
-		AnswerSomethingError(w, "[Error] during parsing userdata", http.StatusBadRequest, true)
+		log.Println("[SignUp/Error] during parsing requestData", err)
+		AnswerSomethingError(w, "[Error] during parsing requestData", http.StatusBadRequest, true)
 		return
 	}
 
@@ -153,7 +146,7 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			panic(err)
 		} else {
 			// セッション保存
-			//user, err := models.GetUserByEmail(userData.Email)
+			//user, err := user.GetUserByEmail(userData.Email)
 			//if err != nil {
 			//	log.Println("[SignUp/Error] fail get new user created")
 			//	AnswerSomethingError(w, "[Error] fail get new user created")
@@ -204,22 +197,6 @@ func checkUniqueUser(email string) bool {
 	}
 	return true
 }
-
-///**
-// * 異常系エラー
-// */
-//func AnswerSomethingError(w http.ResponseWriter, message string) {
-//	w.WriteHeader(http.StatusBadRequest)
-//	status := types.Status{
-//		StatusCode: http.StatusBadRequest,
-//		Message: message,
-//		Token: "",
-//	}
-//	err := json.NewEncoder(w).Encode(status)
-//	if err != nil {
-//		log.Println(err)
-//	}
-//}
 
 /**
  * 正常系エラー

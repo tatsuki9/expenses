@@ -15,7 +15,7 @@
                 <td><label>日付</label></td>
                 <td>
                   <div class="form-group">
-                    <input type="date" name="date" required>
+                    <input type="date" name="date" [(ngModel)]="inputDetail.date" required>
                   </div>
                 </td>
               </tr>
@@ -23,21 +23,20 @@
                 <td><label>支出金額 ¥</label></td>
                 <td>
                   <div class="form-group">
-                    <input type="number" name="number" required>
+                    <input type="number" name="number" [(ngModel)]="inputDetail.price" required>
                   </div>
                 </td>
               </tr>
               <tr>
                 <td><label>項目</label></td>
                 <td>
-                  <select name="example">
-                    <option value="選択肢1">選択肢1</option>
-                    <option value="選択肢2">選択肢2</option>
-                    <option value="選択肢3">選択肢3</option>
+                  <select name="example" [(ngModel)]="inputDetail.category">
+                    <option *ngFor="let name of categories" [ngValue]="name">{{name}}</option>
                   </select>
                 </td>
               </tr>
             </table>
+            <button type="submit" class="btn btn-primary btn-md btn-block">保存</button>
           </div>
         </div>
         <div class="tab_content" id="programming_content">

@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {CalendarService} from "../../../../services/calendar.service";
+import {element} from "protractor";
+
+class InputDetail {
+  date:     string;
+  price:    number;
+  category: string;
+}
 
 @Component({
   selector: 'app-calendar-detail',
@@ -8,14 +15,23 @@ import {CalendarService} from "../../../../services/calendar.service";
 })
 export class CalendarDetailComponent implements OnInit {
 
+  categories: string[] = new Array();
+  inputDetail: InputDetail = new InputDetail();
+
   constructor(
     private calendarService: CalendarService,
-  ) { }
+  ) {
+    // this.categories = new Array();
+  }
 
   ngOnInit() {
-    console.log("----------------[ngOnInit] calendar----------------");
     // httpリクエストでカテゴリーマスターをサーバーから取りに行く。
-    this.calendarService.getCategories();
+    this.calendarService.getCategories()
+      .then((res) => {
+        res.forEach(res=>{
+          this.categories.push(res['CategoryName'])
+        });
+      });
   }
 
   bgClick() {
@@ -23,6 +39,9 @@ export class CalendarDetailComponent implements OnInit {
   }
 
   inputExpenses(){
+    this.calendarService.postDetail(this.inputDetail.date, this.inputDetail.price, this.inputDetail.category)
+      .then((res)=>{
 
+      });
   }
 }
