@@ -1,0 +1,50 @@
+mysqld, Version: 5.6.45 (MySQL Community Server (GPL)). started with:
+Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+# Time: 190803 16:29:37
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.000092  Lock_time: 0.000000 Rows_sent: 1  Rows_examined: 0
+SET timestamp=1564849777;
+select @@version_comment limit 1;
+# Time: 190803 16:29:40
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.011108  Lock_time: 0.000074 Rows_sent: 4  Rows_examined: 4
+SET timestamp=1564849780;
+show databases;
+# Time: 190803 16:32:05
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.000071  Lock_time: 0.000000 Rows_sent: 1  Rows_examined: 0
+SET timestamp=1564849925;
+SELECT DATABASE();
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.001060  Lock_time: 0.000000 Rows_sent: 1  Rows_examined: 0
+use project;
+SET timestamp=1564849925;
+# administrator command: Init DB;
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.008032  Lock_time: 0.000056 Rows_sent: 4  Rows_examined: 4
+SET timestamp=1564849925;
+show databases;
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.001629  Lock_time: 0.000047 Rows_sent: 1  Rows_examined: 1
+SET timestamp=1564849925;
+show tables;
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.000050  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0
+SET timestamp=1564849925;
+;
+# Time: 190803 16:32:07
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.003186  Lock_time: 0.000070 Rows_sent: 1  Rows_examined: 1
+SET timestamp=1564849927;
+show tables;
+# Time: 190803 16:33:39
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.000740  Lock_time: 0.000516 Rows_sent: 2  Rows_examined: 2
+SET timestamp=1564850019;
+desc movie;
+# Time: 190803 16:39:16
+# User@Host: root[root] @ localhost []  Id:     4
+# Query_time: 0.000219  Lock_time: 0.000141 Rows_sent: 1  Rows_examined: 1
+SET timestamp=1564850356;
+select * from movie;

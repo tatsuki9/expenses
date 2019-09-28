@@ -1,0 +1,43 @@
+<div class="auth-modal" [class.hidden]="!showLogin && !showSignup">
+  <div class="wrapper-form">
+    <form [class.hidden]="!showSignup || authService.getRegisterCompleteNow()" (ngSubmit)="signup()" #signupForm="ngForm">
+      <h2 class="text-center">Signup</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" class="form-control" placeholder="Username" name="username" [(ngModel)]="user.username" required>
+      </div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="user.email" [formControl]="emailCtrl" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="user.password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-md btn-block" [disabled]="!signupForm.valid || emailCtrl.hasError('notAllowed')" >Signup</button>
+      <button type="button" class="btn btn-primary btn-md btn-block" [routerLink] [queryParams]="{}">Cancel</button>
+    </form>
+    <form [class.hidden]="!showLogin || authService.getRegisterCompleteNow()" (ngSubmit)="login()" #loginForm="ngForm">
+      <h2 class="text-center">Login</h2>
+      <div class="text-center" style="color: red;">{{errorMes}}</div>
+      <div class="form-group">
+        <label>Email address</label>
+        <input type="email" class="form-control" placeholder="Email" name="email" [(ngModel)]="user.email" required>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" class="form-control" placeholder="Password" name="password" [(ngModel)]="user.password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-md btn-block">Login</button>
+      <button type="button" class="btn btn-primary btn-md btn-block" [routerLink] [queryParams]="{}">Cancel</button>
+    </form>
+
+    <div class="wrapper-result" [class.hidden]="!authService.getRegisterCompleteNow()">
+      <div class="result text-center">
+        <h4>登録が完了しました。</h4>
+        <a [routerLink] [queryParams]="{auth: 'login'}">Login</a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="shadow" [routerLink] [queryParams]="{}" [class.hidden]="!showLogin && !showSignup"></div>

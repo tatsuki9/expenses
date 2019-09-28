@@ -1,0 +1,43 @@
+mysqld, Version: 5.6.45 (MySQL Community Server (GPL)). started with:
+Tcp port: 3306  Unix socket: /var/run/mysqld/mysqld.sock
+Time                 Id Command    Argument
+# Time: 190803 17:14:37
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.004291  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0
+use project;
+SET timestamp=1564852477;
+# administrator command: Prepare;
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.000147  Lock_time: 0.000055 Rows_sent: 1  Rows_examined: 1
+SET timestamp=1564852477;
+SELECT `id`, `title` FROM `movie` WHERE `id`=1 LIMIT 1;
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.000016  Lock_time: 0.000000 Rows_sent: 1  Rows_examined: 1
+SET timestamp=1564852477;
+# administrator command: Close stmt;
+# Time: 190803 17:14:42
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.000365  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0
+SET timestamp=1564852482;
+# administrator command: Prepare;
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.000204  Lock_time: 0.000071 Rows_sent: 0  Rows_examined: 0
+SET timestamp=1564852482;
+SELECT `id`, `title` FROM `movie` WHERE `id`=2 LIMIT 1;
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.000023  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0
+SET timestamp=1564852482;
+# administrator command: Close stmt;
+# Time: 190803 17:14:44
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.000208  Lock_time: 0.000000 Rows_sent: 0  Rows_examined: 0
+SET timestamp=1564852484;
+# administrator command: Prepare;
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.000172  Lock_time: 0.000046 Rows_sent: 1  Rows_examined: 1
+SET timestamp=1564852484;
+SELECT `id`, `title` FROM `movie` WHERE `id`=1 LIMIT 1;
+# User@Host: root[root] @ project-first-go.project_default [192.168.96.2]  Id:     2
+# Query_time: 0.000019  Lock_time: 0.000000 Rows_sent: 1  Rows_examined: 1
+SET timestamp=1564852484;
+# administrator command: Close stmt;

@@ -1,0 +1,53 @@
+<div class="calendar-modal" [class.hidden]="!calendarService.getShowDetail()">
+  <div class="wrapper-form">
+    <form (ngSubmit)="inputExpenses()" #signupForm="ngForm">
+      <h2 class="text-center">家計簿入力</h2>
+      <div class="tabs">
+        <input id="all" type="radio" name="tab_item" checked>
+        <label class="tab_item" for="all">支出</label>
+        <input id="programming" type="radio" name="tab_item">
+        <label class="tab_item" for="programming">収入</label>
+
+        <div class="tab_content" id="all_content">
+          <div class="tab_content_description">
+            <table>
+              <tr>
+                <td><label>日付</label></td>
+                <td>
+                  <div class="form-group">
+                    <input type="date" name="date" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><label>支出金額 ¥</label></td>
+                <td>
+                  <div class="form-group">
+                    <input type="number" name="number" required>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><label>項目</label></td>
+                <td>
+                  <select name="example">
+                    <option value="選択肢1">選択肢1</option>
+                    <option value="選択肢2">選択肢2</option>
+                    <option value="選択肢3">選択肢3</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="tab_content" id="programming_content">
+          <div class="tab_content_description">
+            <p class="c-txtsp">収入の内容</p>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+<div class="shadow" (click)="bgClick()" [class.hidden]="!calendarService.getShowDetail()"></div>

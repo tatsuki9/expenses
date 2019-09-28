@@ -1,0 +1,25 @@
+<nav class="navbar navbar-static-top navbar-inverse" role="navigation" style="background-color: orange">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" [routerLink]="['/']">Home</a>
+      <p class="navbar-text"></p>
+    </div>
+
+    <div class="collapse navbar-collapse navbar-ex1-collapse">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Order</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li [class.hidden]="authService.isLoggedIn()"><a [routerLink] [queryParams]="{auth: 'login'}">Login</a></li>
+        <li [class.hidden]="authService.isLoggedIn()"><a [routerLink] [queryParams]="{auth: 'signup'}">Signup</a></li>
+        <li [class.hidden]="!authService.isLoggedIn()"><a [routerLink] [queryParams]="{auth: 'logout'}">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
