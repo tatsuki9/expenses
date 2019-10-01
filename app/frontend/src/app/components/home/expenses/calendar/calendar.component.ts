@@ -96,7 +96,6 @@ export class CalendarComponent implements OnInit {
       }
       // 再描画してもらう
       this.redraw();
-      console.log(this.expensesDetail);
     });
   }
 

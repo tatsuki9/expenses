@@ -12,9 +12,6 @@ export class RequestInterceptor implements HttpInterceptor {
   ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-    console.log(request.url);
-
     // '/api'から始まるリクエスト
     if (request.url.match(/^\/api\//)) {
       let token  = this.cookieService.get('session');
