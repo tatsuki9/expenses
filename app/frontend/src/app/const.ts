@@ -3,6 +3,10 @@ export namespace SystemConst {
     export const USER_NOT_FOUND = 1000;
     export const AUTHNETICATION_FAILED = 1001;
   }
+  export namespace PaymentType {
+    export const SPEND  = 0;
+    export const INCOME = 1;
+  }
 }
 
 export const colors: any = {

@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {CalendarService} from "../../../../services/calendar.service";
-import {element} from "protractor";
+import {SystemConst} from "../../../../const";
 
 class InputDetail {
-  date:     string;
-  price:    number;
-  category: string;
+  category:    string;
+  price:       number;
 }
 
 @Component({
@@ -17,15 +16,14 @@ export class CalendarDetailComponent implements OnInit {
 
   categories: string[] = new Array();
   inputDetail: InputDetail = new InputDetail();
+  readonly SystemConst = SystemConst;
 
   constructor(
     private calendarService: CalendarService,
   ) {
-    // this.categories = new Array();
   }
 
   ngOnInit() {
-    // httpリクエストでカテゴリーマスターをサーバーから取りに行く。
     this.calendarService.getCategories()
       .then((res) => {
         res.forEach(res=>{
@@ -38,10 +36,15 @@ export class CalendarDetailComponent implements OnInit {
     this.calendarService.setShowDetail(false);
   }
 
-  inputExpenses(){
-    this.calendarService.postDetail(this.inputDetail.date, this.inputDetail.price, this.inputDetail.category)
-      .then((res)=>{
+  inputExpenses(paymentType: number){
+    let clickedDate = this.calendarService.getClickedDate();
+    let year  = clickedDate.getFullYear();
+    let month = ("0"+(clickedDate.getMonth() + 1)).slice(-2);
+    let day   = ("0"+clickedDate.getDate()).slice(-2);
+    let registDate = year + "-" + month + "-" + day;
 
+    this.calendarService.postDetail(this.inputDetail.category, paymentType, this.inputDetail.price, registDate)
+      .then((res)=>{
       });
   }
 }

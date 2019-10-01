@@ -22,6 +22,8 @@ func main() {
 	r.HandleFunc("/api/save_detail", RequireAuth(PostSaveDetail)).Methods("POST")
 
 	r.HandleFunc("/api/categories", RequireAuth(GetCategories)).Methods("GET")
+	r.HandleFunc("/api/user_expenses", RequireAuth(GetUserExpenses)).Methods("GET")
+
 
 	// Handle all preflight request
 	r.Methods("OPTIONS").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

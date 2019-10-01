@@ -11,6 +11,14 @@ const routes: Routes = [
     component: HomeComponent
   },
   {
+    path: 'home/expenses',
+    component: HomeComponent
+  },
+  {
+    path: 'home/setting',
+    component: HomeComponent
+  },
+  {
     path: 'expenses',
     canActivate: [AuthGuard],
     component: ExpensesComponent

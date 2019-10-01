@@ -26,13 +26,8 @@ type signUpStruct struct {
 	Password string `json:password`
 }
 
-func RequireAuth(handler func (w http.ResponseWriter, r *http.Request, id int)) func(w http.ResponseWriter, r *http.Request) {
+func RequireAuth(handler func (w http.ResponseWriter, r *http.Request, userId int)) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request){
-		//cookie, err := r.Cookie("session")
-		//if err != nil {
-		//	log.Println("[RequireAuth/Error] fail get cookie", err)
-		//	AnswerSomethingError(w, "[Error] fail get cookie", http.StatusUnauthorized, true)
-		//}
 		var userId  = -1
 		var isValid = false
 
@@ -77,15 +72,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// セッション作成
+	// トークン作成
 	token, err := utils.GetToken(user.ID)
 
-	//cookie := &http.Cookie{
-	//	Name:  "session",
-	//	Value: token,
-	//	Path:  "/",
-	//}
-	//http.SetCookie(w, cookie)
 	w.WriteHeader(statusCode)
 
 	status := types.Status {
@@ -112,8 +101,6 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 
 	var status types.Status
 	var statusCode = http.StatusOK
-
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
 	// 既存ユーザーチェック
 	if !checkUniqueUser(userData.Email) {
@@ -144,37 +131,11 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 			log.Println("[SignUp/Error] fail create new user")
 			AnswerSomethingError(w, "[Error] fail create new user", http.StatusInternalServerError, true)
 			panic(err)
-		} else {
-			// セッション保存
-			//user, err := user.GetUserByEmail(userData.Email)
-			//if err != nil {
-			//	log.Println("[SignUp/Error] fail get new user created")
-			//	AnswerSomethingError(w, "[Error] fail get new user created")
-			//	panic(err)
-			//}
-			//session, err := sessions.Store.Get(r, "session")
-			//if err != nil {
-			//	session, err = sessions.Store.New(r, "session")
-			//	if err != nil {
-			//		log.Println("[SignUp/Error] fail create new session")
-			//		AnswerSomethingError(w, "[Error] fail create new session")
-			//		panic(err)
-			//	}
-			//}
-			//session.Values["loggedin"] = "true"
-			//session.Values["username"] = userData.Username
-			//session.Values["user_id"]  = user.ID
-			//session.Save(r, w)
-			//token, err = utils.GetToken(user.ID)
-			//if err != nil {
-			//	log.Println("[SignUp/Error] fail get jwt token")
-			//	AnswerSomethingError(w, "[Error] fail get jwt token")
-			//	panic(err)
-			//}
 		}
 	}
 
 	w.WriteHeader(statusCode)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 
 	status = types.Status {
 		StatusCode: statusCode,

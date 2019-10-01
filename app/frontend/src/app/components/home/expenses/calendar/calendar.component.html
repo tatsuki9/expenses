@@ -7,13 +7,27 @@
 <strong *ngIf="clickedColumn != null">You clicked on this column: {{ clickedColumn }}</strong>
 </div>
 
+
+<ng-template #customCellTemplate let-day="day" let-locale="locale">
+  <div class="cal-cell-top">
+    <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+  </div>
+
+  <div *ngIf="expensesDate.indexOf((viewDate | date:'yyyy-MM' + '-' + ('0' + (day.date | calendarDate:'monthViewDayNumber':locale)).slice(-2)))>=0 && day.inMonth">
+    <span style="color: #5ab4bd; display: block;" *ngIf="expensesDetail.get((viewDate | date:'yyyy-MM' + '-' + ('0' + (day.date | calendarDate:'monthViewDayNumber':locale)).slice(-2))).get('in') != undefined">収入: ¥{{expensesDetail.get((viewDate | date:'yyyy-MM' + '-' + ('0' + (day.date | calendarDate:'monthViewDayNumber':locale)).slice(-2))).get('in')}}</span>
+<span style="color: brown;" *ngIf="expensesDetail.get((viewDate | date:'yyyy-MM' + '-' + ('0' + (day.date | calendarDate:'monthViewDayNumber':locale)).slice(-2))).get('out') != undefined">支出: ¥{{expensesDetail.get((viewDate | date:'yyyy-MM' + '-' + ('0' + (day.date | calendarDate:'monthViewDayNumber':locale)).slice(-2))).get('out')}}</span>
+  </div>
+</ng-template>
+
+
 <div [ngSwitch]="view">
   <mwl-calendar-month-view
     *ngSwitchCase="'month'"
     [viewDate]="viewDate"
     [events]="events"
+    [cellTemplate]="customCellTemplate"
     (columnHeaderClicked)="clickedColumn = $event"
-    (dayClicked)="eventClicked($event.day.date)"
+    (dayClicked)="eventClicked($event.day)"
   >
   </mwl-calendar-month-view>
 </div>

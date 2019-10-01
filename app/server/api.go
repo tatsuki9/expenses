@@ -4,20 +4,19 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"expenses/models"
 	"expenses/models/mst"
+	"expenses/types"
 )
 
 type SaveDetailStruct struct {
-	Date     string `json:"date"`
-	Price    uint64 `json:"price"`
-	Category string `json:"category"`
+	Category    string         `json:"category"`
+	PaymentType int            `json:"payment_type"`
+	Price       uint64         `json:"price"`
+	Date        types.JsonTime `json:"date"`
 }
 
-func GetCategories(w http.ResponseWriter, r *http.Request, id int) {
-	log.Println("[GetCategories] start")
-	log.Println("[GetCategories] user_id: ")
-	log.Println(id)
-
+func GetCategories(w http.ResponseWriter, r *http.Request, userId int) {
 	var statusCode = http.StatusOK
 	mstCategories, err := mst.GetAllMstCategory()
 	if err != nil {
@@ -34,19 +33,55 @@ func GetCategories(w http.ResponseWriter, r *http.Request, id int) {
 	}
 }
 
-func PostSaveDetail(w http.ResponseWriter, r *http.Request, id int) {
-	log.Println("[PostSaveDetail] start")
-	log.Println(r.Body)
-	log.Println(r.Header.Get("Content-Type"))
+func GetUserExpenses(w http.ResponseWriter, r *http.Request, userId int) {
+	var statusCode = http.StatusOK
+	userExpenses, err := models.GetUserUserExpensesByID(userId)
+	if err != nil {
+		log.Println("[GetUserExpenses/Error] something error occured when get user expenses from db", err)
+		AnswerSomethingError(w, "[Error] something error occured when get user expenses from db", http.StatusInternalServerError, true)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.WriteHeader(statusCode)
+	err = json.NewEncoder(w).Encode(userExpenses)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func PostSaveDetail(w http.ResponseWriter, r *http.Request, userId int) {
 	var saveDetailStruct SaveDetailStruct
+	var statusCode = http.StatusOK
+	var status types.Status
+
 	err := json.NewDecoder(r.Body).Decode(&saveDetailStruct)
 	defer r.Body.Close()
-
-	log.Println(saveDetailStruct)
 
 	if err != nil {
 		log.Println("[PostSaveDetail/Error] during parsing requestData", err)
 		AnswerSomethingError(w, "[Error] during parsing requestData", http.StatusBadRequest, true)
 		return
 	}
+
+	err = models.CreateUserExpenses(userId, saveDetailStruct.Category, saveDetailStruct.PaymentType, saveDetailStruct.Price, saveDetailStruct.Date)
+	if err != nil {
+		log.Println("[PostSaveDetail/Error] fail create new user expenses")
+		AnswerSomethingError(w, "[Error] fail create new user expenses", http.StatusInternalServerError, true)
+		panic(err)
+	}
+
+	w.WriteHeader(statusCode)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	status = types.Status {
+		StatusCode: statusCode,
+		Message: "Post expenses detail success",
+		Token: "",
+	}
+	err = json.NewEncoder(w).Encode(status)
+	if err != nil {
+		panic(err)
+	}
+
 }

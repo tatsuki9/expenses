@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Subscription } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute,Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 
 @Component({
@@ -9,25 +8,21 @@ import { AuthService } from "../../services/auth.service";
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  private sub: Subscription;
   public activeComponent: string = "expenses";
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
-    this.sub = this.activeRoute.queryParams.subscribe(params => {
+    let page = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
 
-      console.log("---------------[ngOnInit] home ---------------");
-
-      if (params['home'] == 'expenses') {
-        this.activeComponent = "expenses"
-      } else if (params['home'] == 'setting') {
-        this.activeComponent = "setting"
-      }
-    })
+    if (page == 'expenses') {
+      this.activeComponent = "expenses"
+    } else if (page == 'setting') {
+      this.activeComponent = "setting"
+    }
   }
-
 }

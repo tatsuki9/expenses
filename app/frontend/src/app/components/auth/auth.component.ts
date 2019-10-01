@@ -45,7 +45,7 @@ export class AuthComponent implements OnInit {
         } else if (res['status_code'] == SystemConst.Error.AUTHNETICATION_FAILED) {
           this.errorMes = "メールアドレスかパスワードが間違っています。";
         } else {
-          this.router.navigate(["/home"]);
+          this.router.navigate(["/home/expenses"]);
         }
       });
   }
