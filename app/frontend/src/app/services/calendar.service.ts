@@ -27,7 +27,7 @@ export class CalendarService {
       })
       .catch((err) => {
         if (err.status == 401) {
-          this.authService.logout();
+          this.authService.logoutOrLeave();
           this.router.navigate(["/"]);
         }
       });
@@ -41,7 +41,7 @@ export class CalendarService {
       })
       .catch((err) => {
         if (err.status == 401) {
-          this.authService.logout();
+          this.authService.logoutOrLeave();
           this.router.navigate(["/"]);
         }
       });
@@ -62,6 +62,7 @@ export class CalendarService {
           this.setShowDetail(false);
           this.changeDetectionEmitter.emit();
         }
+        return res;
       });
   }
 

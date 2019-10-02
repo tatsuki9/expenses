@@ -1,1 +1,12 @@
-<p>setting works!</p>
+<div class="container">
+  <h3>退会</h3>
+  <hr style="border-top: 3px double #8c8b8b; margin-top: -5px;">
+  <button (click)="leave()" type="submit" class="btn btn-danger btn-sm">退会する</button>
+</div>
+<div [class.hidden]="!settingService.getLeaveCompleteNow()" class="leave-complete-modal text-center">
+  <div class="leave-complete-text-area">
+    退会処理が完了しました。<br>
+    <a [routerLink]="['/']">トップページへ</a>
+  </div>
+</div>
+<div class="shadow" [class.hidden]="!settingService.getLeaveCompleteNow()"></div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import {CalendarService} from "../../../../services/calendar.service";
 import {SystemConst} from "../../../../const";
 
@@ -20,15 +20,18 @@ export class CalendarDetailComponent implements OnInit {
 
   constructor(
     private calendarService: CalendarService,
+    private cd: ChangeDetectorRef
   ) {
   }
 
   ngOnInit() {
     this.calendarService.getCategories()
       .then((res) => {
-        res.forEach(res=>{
-          this.categories.push(res['CategoryName'])
-        });
+        if (res != null) {
+          res.forEach(res=>{
+            this.categories.push(res['CategoryName'])
+          });
+        }
       });
   }
 
@@ -45,6 +48,16 @@ export class CalendarDetailComponent implements OnInit {
 
     this.calendarService.postDetail(this.inputDetail.category, paymentType, this.inputDetail.price, registDate)
       .then((res)=>{
+        if (res['status_code'] == 200) {
+          this.redraw();
+        }
       });
+  }
+
+  redraw() {
+    // 強制的に再描画させる
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 }

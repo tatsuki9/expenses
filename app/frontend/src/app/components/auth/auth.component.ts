@@ -44,6 +44,8 @@ export class AuthComponent implements OnInit {
           this.errorMes = "登録されていないユーザーです。";
         } else if (res['status_code'] == SystemConst.Error.AUTHNETICATION_FAILED) {
           this.errorMes = "メールアドレスかパスワードが間違っています。";
+        } else if (res['status_code'] == SystemConst.Error.ALREADY_USER_LEAVE) {
+          this.errorMes = "退会済みのメールアドレスです。";
         } else {
           this.router.navigate(["/home/expenses"]);
         }
@@ -54,12 +56,19 @@ export class AuthComponent implements OnInit {
   signup() {
     this.authService.signup(this.user.username, this.user.email, this.user.password)
       .then((res) => {
+        if (res['status_code'] == SystemConst.Error.ALREADY_USER_LEAVE) {
+          this.errorMes = "退会済みのメールアドレスです。";
+        }
+        else if (res['status_code'] == SystemConst.Error.ALREADY_USER_EXIST) {
+          this.errorMes = "既に登録済みのメールアドレスです。";
+        }
       });
   }
 
   ngOnInit() {
     this.sub = this.activedRoute.queryParams.subscribe(params => {
       this.authService.setRegisterCompleteNow(false);
+      this.init();
 
       if (params['auth'] == 'login') {
         this.showLogin  = true;
@@ -68,13 +77,20 @@ export class AuthComponent implements OnInit {
         this.showLogin  = false;
         this.showSignup = true;
       } else if (params['auth'] == 'logout') {
-        this.authService.logout();
+        this.authService.logoutOrLeave();
         this.router.navigate(["/"]);
       } else {
         this.showLogin  = false;
         this.showSignup = false;
       }
     });
+  }
+
+  init() {
+    this.user.username = '';
+    this.user.password = '';
+    this.user.email = '';
+    this.errorMes = '';
   }
 
 }

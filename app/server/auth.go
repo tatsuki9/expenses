@@ -58,6 +58,15 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		AnswerSomethingError(w, "[Error] something error occured when get user from db", http.StatusInternalServerError, true)
 		return
 	}
+
+	// 退会チェック
+	if user.IsDelete > 0 {
+		log.Println("[Login/Error] already user was unsubscribed, request data: ", loginData)
+		AnswerSomethingError(w, "[Error] already user was unsubscribed", STATUS_ALREADY_USER_LEAVE, false)
+		return
+	}
+
+	// 存在チェック
 	if user.ID <= 0 {
 		log.Println("[Login/Error] not found user, request data: ", loginData)
 		AnswerSomethingError(w, "[Error] not found user", STATUS_USER_NOT_FOUND, false)
@@ -73,7 +82,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// トークン作成
-	token, err := utils.GetToken(user.ID)
+	token, remainAt, err := utils.GetToken(user.ID)
 
 	w.WriteHeader(statusCode)
 
@@ -81,6 +90,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		StatusCode: statusCode,
 		Message: "Login success",
 		Token: token,
+		RemainAt: remainAt,
 	}
 	err = json.NewEncoder(w).Encode(status)
 	if err != nil {
@@ -102,10 +112,22 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 	var status types.Status
 	var statusCode = http.StatusOK
 
-	// 既存ユーザーチェック
-	if !checkUniqueUser(userData.Email) {
-		log.Println("[SignUp/Error] User is not unique Because request email is duplicate.")
-		AnswerSomethingError(w, "[Error] User with email already exists.", http.StatusBadRequest, true)
+	user, err := models.GetUserByEmail(userData.Email)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 既存ユーザー存在チェック
+	if user.ID > 0 && user.IsDelete == 0 {
+		log.Println("[SignUp/Error] User is not unique Because request email is duplicate. userdata: ", userData)
+		AnswerSomethingError(w, "[Error] User is not unique Because request email is duplicate.", STATUS_ALREADY_USER_EXIST, false)
+		return
+	}
+
+	// 退会チェック
+	if user.IsDelete > 0 {
+		log.Println("[SignUp/Error] Already user was unsubscribed userdata: ", userData)
+		AnswerSomethingError(w, "[Error] already user was unsubscribed", STATUS_ALREADY_USER_LEAVE, false)
 		return
 	}
 
@@ -141,22 +163,12 @@ func SignUp(w http.ResponseWriter, r *http.Request) {
 		StatusCode: statusCode,
 		Message: "Sign up success",
 		Token: "",
+		RemainAt: 0,
 	}
 	err = json.NewEncoder(w).Encode(status)
 	if err != nil {
 		panic(err)
 	}
-}
-
-func checkUniqueUser(email string) bool {
-	user, err := models.GetUserByEmail(email)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if user.ID > 0 {
-		return false
-	}
-	return true
 }
 
 /**
@@ -166,10 +178,11 @@ func AnswerSomethingError(w http.ResponseWriter, message string, errno int, isWi
 	if isWithHeader {
 		w.WriteHeader(errno)
 	}
-	status := types.Status{
+	status := types.Status {
 		StatusCode: errno,
 		Message: message,
 		Token: "",
+		RemainAt: 0,
 	}
 	err := json.NewEncoder(w).Encode(status)
 	if err != nil {

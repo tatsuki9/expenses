@@ -83,5 +83,29 @@ func PostSaveDetail(w http.ResponseWriter, r *http.Request, userId int) {
 	if err != nil {
 		panic(err)
 	}
+}
 
+func Leave(w http.ResponseWriter, r *http.Request, userId int) {
+	var status types.Status
+	var statusCode = http.StatusOK
+
+	err := models.LeaveUpdateUser(userId)
+	if err != nil {
+		log.Println("[Leave/Error] fail delete update user")
+		AnswerSomethingError(w, "[Error] fail delete update user", http.StatusInternalServerError, true)
+		panic(err)
+	}
+
+	w.WriteHeader(statusCode)
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+
+	status = types.Status {
+		StatusCode: statusCode,
+		Message: "Leave Update success",
+		Token: "",
+	}
+	err = json.NewEncoder(w).Encode(status)
+	if err != nil {
+		panic(err)
+	}
 }

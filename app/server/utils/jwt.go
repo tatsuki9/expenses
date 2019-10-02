@@ -13,12 +13,16 @@ type TokenClaims struct {
 
 var mySigningKey = []byte(os.Getenv("JWT_SECRET_KEY"))
 
-func GetToken(id int) (string, error) {
+func GetToken(id int) (string, int64, error) {
+
+	expiresAt := time.Now().Add(time.Hour * 5).Unix()
+	now := time.Now().Unix()
+	remainAt := expiresAt - now
 
 	claims := TokenClaims{
 		id,
 		jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 5).Unix(),
+			ExpiresAt: expiresAt,
 		},
 	}
 
@@ -26,9 +30,9 @@ func GetToken(id int) (string, error) {
 
 	tokenString, err := token.SignedString(mySigningKey)
 	if err != nil {
-		return "", err
+		return "", -1, err
 	}
-	return tokenString, nil
+	return tokenString, remainAt, nil
 }
 
 func ValidateToken(receiveToken string) (bool, int) {

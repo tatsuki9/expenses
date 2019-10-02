@@ -2,6 +2,7 @@
   <div class="wrapper-form">
     <form [class.hidden]="!showSignup || authService.getRegisterCompleteNow()" (ngSubmit)="signup()" #signupForm="ngForm">
       <h2 class="text-center">Signup</h2>
+      <div class="text-center" style="color: red;">{{errorMes}}</div>
       <div class="form-group">
         <label>Username</label>
         <input type="text" class="form-control" placeholder="Username" name="username" [(ngModel)]="user.username" required>

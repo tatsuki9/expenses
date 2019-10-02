@@ -1,2 +1,3 @@
+app/server/vendor/
 mysql/volumes/
 .idea/

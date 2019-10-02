@@ -23,7 +23,7 @@ func main() {
 
 	r.HandleFunc("/api/categories", RequireAuth(GetCategories)).Methods("GET")
 	r.HandleFunc("/api/user_expenses", RequireAuth(GetUserExpenses)).Methods("GET")
-
+	r.HandleFunc("/api/leave", RequireAuth(Leave)).Methods("POST")
 
 	// Handle all preflight request
 	r.Methods("OPTIONS").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

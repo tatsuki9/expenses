@@ -36,7 +36,7 @@ export class CalendarComponent implements OnInit {
 
   constructor(
     private calendarService: CalendarService,
-    public changeDetectorRef: ChangeDetectorRef
+    public cd: ChangeDetectorRef
   ) { }
 
   eventClicked(day): void {
@@ -58,49 +58,53 @@ export class CalendarComponent implements OnInit {
     this.expensesDetail.clear();
     this.expensesDate = [];
     this.calendarService.getUserExpenses().then(res=>{
-      res.forEach(res=>{
-        let data = this.expensesDetail.get(res['RegisterDate']);
-        if (data != undefined) {
-          let outPrice = data.get('out') != undefined ? data.get('out') : 0;
-          let inPrice  = data.get('in') != undefined ? data.get('in') : 0;
+      if (res != null) {
+        res.forEach(res=>{
+          let data = this.expensesDetail.get(res['RegisterDate']);
+          if (data != undefined) {
+            let outPrice = data.get('out') != undefined ? data.get('out') : 0;
+            let inPrice  = data.get('in') != undefined ? data.get('in') : 0;
 
-          switch (res['PaymentType']) {
-            case SystemConst.PaymentType.SPEND:
-              outPrice += res['Price'];
-              data.set('out', outPrice);
-              break;
-            case SystemConst.PaymentType.INCOME:
-              inPrice += res['Price'];
-              data.set('in', inPrice);
-              break;
-            default:
-              break;
+            switch (res['PaymentType']) {
+              case SystemConst.PaymentType.SPEND:
+                outPrice += res['Price'];
+                data.set('out', outPrice);
+                break;
+              case SystemConst.PaymentType.INCOME:
+                inPrice += res['Price'];
+                data.set('in', inPrice);
+                break;
+              default:
+                break;
+            }
+          } else {
+            let detail = new Map();
+            switch (res['PaymentType']) {
+              case SystemConst.PaymentType.SPEND:
+                detail.set('out', res['Price']);
+                break;
+              case SystemConst.PaymentType.INCOME:
+                detail.set('in', res['Price']);
+                break;
+              default:
+                break;
+            }
+            this.expensesDetail.set(res['RegisterDate'], detail);
           }
-        } else {
-          let detail = new Map();
-          switch (res['PaymentType']) {
-            case SystemConst.PaymentType.SPEND:
-              detail.set('out', res['Price']);
-              break;
-            case SystemConst.PaymentType.INCOME:
-              detail.set('in', res['Price']);
-              break;
-            default:
-              break;
-          }
-          this.expensesDetail.set(res['RegisterDate'], detail);
+        });
+        for (let key of this.expensesDetail.keys()) {
+          this.expensesDate.push(key);
         }
-      });
-      for (let key of this.expensesDetail.keys()) {
-        this.expensesDate.push(key);
+        // 再描画してもらう
+        this.redraw();
       }
-      // 再描画してもらう
-      this.redraw();
     });
   }
 
   redraw() {
     // 強制的に再描画させる
-    this.changeDetectorRef.detectChanges();
+    if (!this.cd['destroyed']) {
+      this.cd.detectChanges();
+    }
   }
 }

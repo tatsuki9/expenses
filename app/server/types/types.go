@@ -14,6 +14,7 @@ type Status struct {
 	StatusCode int    `json:"status_code"`
 	Message    string `json:"message"`
 	Token      string `json:"token"`
+	RemainAt   int64  `json:"remain_at"`
 }
 
 type JsonTime struct {

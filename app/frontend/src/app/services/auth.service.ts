@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from "rxjs";
-import { CookieService } from "ngx-cookie-service";
+// ngx-cookie-serviceだと特定の場合でcookieが削除されない場合があるので、以下採用
+import Cookies from "../../../node_modules/js-cookie/src/js.cookie.js"
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,6 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService
   ) { }
 
   login (email: string, password: string) {
@@ -24,7 +23,7 @@ export class AuthService {
       .toPromise()
       .then((res) => {
         if (res['status_code'] == 200) {
-          this.cookieService.set('session', res['token']);
+          Cookies.set('session', res['token'], { expires: res['remain_at'] / 86164 });
         }
         return res;
       })
@@ -44,16 +43,21 @@ export class AuthService {
         if (res['status_code'] == 200) {
           this.registerCompleteNow = true;
         }
+        return res;
       })
       .catch(this.errorHandler);
   }
 
-  logout () {
-    this.cookieService.delete('session');
+  logoutOrLeave () {
+    Cookies.remove('session');
   }
 
   isLoggedIn() {
-    return this.cookieService.get('session') != "";
+    return this.getCookie() != undefined;
+  }
+
+  getCookie() {
+    return Cookies.get('session');
   }
 
   getRegisterCompleteNow () {
