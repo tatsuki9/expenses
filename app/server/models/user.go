@@ -14,6 +14,9 @@ type User struct {
 	Created  time.Time `db:"created"`
 }
 
+/**
+ * ユーザー作成
+ */
 func CreateUser(username string, email string, password string) error {
 	sql := `INSERT INTO users(name, email, password, is_delete, created) VALUES(?, ?, ?, 0, NOW())`
 
@@ -21,6 +24,9 @@ func CreateUser(username string, email string, password string) error {
 	return err
 }
 
+/**
+ * emailからユーザー取得
+ */
 func GetUserByEmail(email string) (*User, error) {
 	var user User
 	sql  := `SELECT * FROM users WHERE email = ?`
@@ -37,6 +43,9 @@ func GetUserByEmail(email string) (*User, error) {
 	return &user, nil
 }
 
+/**
+ * 退会処理
+ */
 func LeaveUpdateUser(userId int) error {
 	sql := `UPDATE users SET is_delete = 1 WHERE id = ?`
 

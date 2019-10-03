@@ -9,6 +9,9 @@ type MstCategories struct {
 	CategoryName string `db:"category_name"`
 }
 
+/**
+ * ユーザーカテゴリー一覧取得
+ */
 func GetAllMstCategory() ([]MstCategories, error) {
 	var mstCategories []MstCategories
 	sql  := `SELECT * FROM mst_categories`
@@ -24,20 +27,4 @@ func GetAllMstCategory() ([]MstCategories, error) {
 		mstCategories = append(mstCategories, mstCategory)
 	}
 	return mstCategories, nil
-}
-
-func GetMstCategoryByID(id int) (*MstCategories, error) {
-	var mstCategory MstCategories
-	sql  := `SELECT * FROM mst_categories WHERE id = ?`
-	rows := base.GetInstance().Query(sql, id)
-	defer rows.Close()
-
-	if rows.Next() {
-		err := rows.Scan(&mstCategory.ID, &mstCategory.CategoryName)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	return &mstCategory, nil
 }

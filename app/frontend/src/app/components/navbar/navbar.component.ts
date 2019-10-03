@@ -35,8 +35,10 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  /**
+   * @brief 強制的に再描画
+   */
   redraw() {
-    // 強制的に再描画させる
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }

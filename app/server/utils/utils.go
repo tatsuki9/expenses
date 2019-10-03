@@ -6,7 +6,9 @@ import (
 	"io"
 )
 
-// パスワード暗号化
+/**
+ * パスワードハッシュ化
+ */
 func EncryptPassword(password string) string {
 	h := sha1.New()
 	io.WriteString(h, password)

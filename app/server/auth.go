@@ -26,6 +26,9 @@ type signUpStruct struct {
 	Password string `json:password`
 }
 
+/**
+ * 事前認証ハンドラ
+ */
 func RequireAuth(handler func (w http.ResponseWriter, r *http.Request, userId int)) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request){
 		var userId  = -1
@@ -40,6 +43,9 @@ func RequireAuth(handler func (w http.ResponseWriter, r *http.Request, userId in
 	}
 }
 
+/**
+ * ログインハンドラ
+ */
 func Login(w http.ResponseWriter, r *http.Request) {
 	var loginData loginStruct
 	var statusCode = http.StatusOK
@@ -98,6 +104,9 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+/**
+ * サインアップハンドラ
+ */
 func SignUp(w http.ResponseWriter, r *http.Request) {
 	var userData signUpStruct
 	err := json.NewDecoder(r.Body).Decode(&userData)

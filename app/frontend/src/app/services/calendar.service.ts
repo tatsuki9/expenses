@@ -19,6 +19,9 @@ export class CalendarService {
   ) {
   }
 
+  /**
+   * @brief カテゴリー一覧取得
+   */
   getCategories() {
     return this.http.get('/api/categories')
       .toPromise()
@@ -33,6 +36,9 @@ export class CalendarService {
       });
   }
 
+  /**
+   * @brief ユーザー家計簿一覧取得
+   */
   getUserExpenses() {
     return this.http.get('/api/user_expenses')
       .toPromise()
@@ -47,6 +53,13 @@ export class CalendarService {
       });
   }
 
+  /**
+   * @brief 家計簿詳細保存
+   * @param category
+   * @param paymentType
+   * @param price
+   * @param date
+   */
   postDetail(category: string, paymentType: number, price: number, date: string) {
     let requestBody = {
       "category":     category,
@@ -66,6 +79,9 @@ export class CalendarService {
       });
   }
 
+  /**
+   * @brief 家計簿詳細入力ダイアログ表示有無取得
+   */
   getShowDetail () {
     return this.showDetail;
   }
@@ -74,6 +90,9 @@ export class CalendarService {
     this.showDetail = val;
   }
 
+  /**
+   * @brief カレンダーでクリックした日付取得
+   */
   getClickedDate () {
     return this.clickedDate;
   }
@@ -82,6 +101,9 @@ export class CalendarService {
     this.clickedDate = val;
   }
 
+  /**
+   * @brief イベント発火取得
+   */
   getChangeDetectionEmitter() {
     return this.changeDetectionEmitter;
   }

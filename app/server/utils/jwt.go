@@ -13,6 +13,9 @@ type TokenClaims struct {
 
 var mySigningKey = []byte(os.Getenv("JWT_SECRET_KEY"))
 
+/**
+ * JWTトークン取得
+ */
 func GetToken(id int) (string, int64, error) {
 
 	expiresAt := time.Now().Add(time.Hour * 5).Unix()
@@ -35,6 +38,9 @@ func GetToken(id int) (string, int64, error) {
 	return tokenString, remainAt, nil
 }
 
+/**
+ * JWTトークン検証
+ */
 func ValidateToken(receiveToken string) (bool, int) {
 	token, err := jwt.ParseWithClaims(receiveToken, &TokenClaims{}, func(token *jwt.Token) (interface{}, error){
 		return []byte(mySigningKey), nil

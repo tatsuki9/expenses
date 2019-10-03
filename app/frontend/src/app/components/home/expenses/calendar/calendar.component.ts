@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import {CalendarEvent, CalendarEventTitleFormatter, CalendarMonthViewDay} from "angular-calendar";
 import {CustomEventTitleFormatter} from "./custom-event-title-formatter.provider";
-import {colors} from "../../../../const";
 import {CalendarService} from "../../../../services/calendar.service";
 import {SystemConst} from "../../../../const";
 
@@ -20,25 +19,21 @@ import {SystemConst} from "../../../../const";
 export class CalendarComponent implements OnInit {
   view: string = 'month';
   viewDate: Date = new Date();
-
   expensesDate: string[] =  new Array();
   expensesDetail = new Map();
-
-  clickedDate: Date;
+  total = new Map();
   clickedColumn: number;
-  events: CalendarEvent[] = [
-    {
-      title: 'Click',
-      color: colors.red,
-      start: new Date()
-    }
-  ];
+  events: CalendarEvent[] = [];
 
   constructor(
     private calendarService: CalendarService,
     public cd: ChangeDetectorRef
   ) { }
 
+  /**
+   * @brief カレンダーの日にちクリック時のイベント処理
+   * @param day Object
+   */
   eventClicked(day): void {
     if (day.inMonth) {
       this.calendarService.setShowDetail(true);
@@ -46,7 +41,11 @@ export class CalendarComponent implements OnInit {
     }
   };
 
+  /**
+   * @brief コンポーネント初期化、他、ユーザー家計簿一覧取得
+   */
   ngOnInit() {
+    // ユーザー家計簿一覧取得
     this.getUserExpenses();
 
     this.calendarService.getChangeDetectionEmitter().subscribe(()=>{
@@ -54,6 +53,9 @@ export class CalendarComponent implements OnInit {
     })
   }
 
+  /**
+   * @brief ユーザー家計簿一覧取得
+   */
   getUserExpenses() {
     this.expensesDetail.clear();
     this.expensesDate = [];
@@ -92,6 +94,8 @@ export class CalendarComponent implements OnInit {
             this.expensesDetail.set(res['RegisterDate'], detail);
           }
         });
+        this.calcTotal();
+
         for (let key of this.expensesDetail.keys()) {
           this.expensesDate.push(key);
         }
@@ -101,8 +105,46 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  /**
+   * @brief 当月の支出、収入の合計を算出
+   */
+  calcTotal() {
+
+    this.total.clear();
+
+    for (const [key, value] of this.expensesDetail) {
+      // console.log(value);
+      let ym = key.substr(0, 7);
+      let data = this.total.get(ym);
+      if (data != undefined) {
+        let inPrice  = data.get('in');
+        let outPrice = data.get('out');
+        let addInPrice  = value.get('in') != undefined ? value.get('in') : 0;
+        let addOutPrice = value.get('out') != undefined ? value.get('out') : 0;
+        inPrice  += addInPrice;
+        outPrice += addOutPrice;
+        data.set('in', inPrice);
+        data.set('out', outPrice);
+      } else {
+        let detail = new Map();
+        let inPrice  = value.get('in') != undefined ? value.get('in') : 0;
+        let outPrice = value.get('out') != undefined ? value.get('out') : 0;
+        detail.set('in', inPrice);
+        detail.set('out', outPrice);
+        this.total.set(ym, detail);
+      }
+    }
+
+    for (const [key, value] of this.total) {
+      let totalPrice = value.get('in') - value.get('out');
+      value.set('total', totalPrice);
+    }
+  }
+
+  /**
+   * @brief 強制的に再描画させる
+   */
   redraw() {
-    // 強制的に再描画させる
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }

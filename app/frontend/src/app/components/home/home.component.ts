@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { ActivatedRoute,Router } from "@angular/router";
 import { AuthService } from "../../services/auth.service";
 
@@ -14,9 +14,12 @@ export class HomeComponent implements OnInit {
   constructor(
     private activeRoute: ActivatedRoute,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) { }
 
+  /**
+   * @brief コンポーネント初期化、他、ホームに表示するコンテンツ決める
+   */
   ngOnInit() {
     let page = this.router.url.substr(this.router.url.lastIndexOf('/') + 1);
 

@@ -15,10 +15,16 @@ export class SettingComponent implements OnInit {
     private cd: ChangeDetectorRef
   ) { }
 
+  /**
+   * @brief コンポーネント初期化
+   */
   ngOnInit() {
     this.settingService.init();
   }
 
+  /**
+   * @brief 退会処理
+   */
   leave() {
     let result = window.confirm("退会しますがよろしいですか?");
 
@@ -36,8 +42,10 @@ export class SettingComponent implements OnInit {
     }
   }
 
+  /**
+   * @brief 強制的に再描画させる
+   */
   redraw() {
-    // 強制的に再描画させる
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }

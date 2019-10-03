@@ -1,5 +1,7 @@
 <div [class.hidden]="!authService.isLoggedIn()">
   <app-homenavbar></app-homenavbar>
-  <app-expenses *ngIf="activeComponent == 'expenses'"></app-expenses>
-  <app-setting *ngIf="activeComponent == 'setting'"></app-setting>
+  <div class="container">
+    <app-expenses *ngIf="activeComponent == 'expenses'"></app-expenses>
+    <app-setting *ngIf="activeComponent == 'setting'"></app-setting>
+  </div>
 </div>

@@ -13,6 +13,11 @@ export class AuthService {
     private http: HttpClient,
   ) { }
 
+  /**
+   * @brief ログイン処理
+   * @param email string
+   * @param password string
+   */
   login (email: string, password: string) {
     let requestBody = {
       "email": email,
@@ -30,6 +35,12 @@ export class AuthService {
       .catch(this.errorHandler);
   }
 
+  /**
+   * @brief サインアップ処理
+   * @param username
+   * @param email
+   * @param password
+   */
   signup (username: string, email: string, password: string) {
     let requestBody = {
       "username": username,
@@ -48,18 +59,30 @@ export class AuthService {
       .catch(this.errorHandler);
   }
 
+  /**
+   * @brief ログアウト、退会時の後処理
+   */
   logoutOrLeave () {
     Cookies.remove('session');
   }
 
+  /**
+   * @brief セッションチェック
+   */
   isLoggedIn() {
     return this.getCookie() != undefined;
   }
 
+  /**
+   * @brief クッキー取得
+   */
   getCookie() {
     return Cookies.get('session');
   }
 
+  /**
+   * @brief 新規登録フラグ取得
+   */
   getRegisterCompleteNow () {
     return this.registerCompleteNow;
   }

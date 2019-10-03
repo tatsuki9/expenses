@@ -13,4 +13,4 @@ import { CalendarHeaderComponent } from "./calendar-header.component";
   ],
   exports: [CalendarHeaderComponent]
 })
-export class DemoUtilsModule { }
+export class CalendarHeaderModule { }

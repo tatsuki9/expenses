@@ -14,6 +14,9 @@ type UserExpenses struct {
 	RegisterDate types.JsonTime `db:"register_date"`
 }
 
+/**
+ * ユーザー家計簿作成
+ */
 func CreateUserExpenses(userId int, categoryName string, paymentType int, price uint64, registerDate types.JsonTime) error {
 	sql := `INSERT INTO user_expenses(user_id, category_name, payment_type, price, register_date) VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE price = price + VALUES(price)`
 
@@ -21,6 +24,9 @@ func CreateUserExpenses(userId int, categoryName string, paymentType int, price 
 	return err
 }
 
+/**
+ * ユーザー家計簿取得
+ */
 func GetUserUserExpensesByID(userId int) ([]UserExpenses, error) {
 	var userExpenses []UserExpenses
 	sql := `SELECT * FROM user_expenses WHERE user_id = ?`

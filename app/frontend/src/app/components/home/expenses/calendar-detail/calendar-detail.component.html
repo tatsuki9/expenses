@@ -9,52 +9,56 @@
         <label class="tab_item" for="programming">収入</label>
 
         <div class="tab_content" id="all_content">
-          <form (ngSubmit)="inputExpenses(SystemConst.PaymentType.SPEND)" #signupForm="ngForm">
+          <form (ngSubmit)="inputExpenses(SystemConst.PaymentType.SPEND)" #inputOutPriceForm="ngForm">
             <div class="tab_content_description">
               <table>
                 <tr>
                   <td><label>支出金額 ¥</label></td>
                   <td>
                     <div class="form-group">
-                      <input type="number" name="number" [(ngModel)]="inputDetail.price" required>
+                      <input type="number" name="number" min="0" maxlength="9" [(ngModel)]="inputDetail.price"
+                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                             required>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <td><label>項目</label></td>
                   <td>
-                    <select name="example" [(ngModel)]="inputDetail.category">
+                    <select name="category" [(ngModel)]="inputDetail.category" required>
                       <option *ngFor="let name of categories" [ngValue]="name">{{name}}</option>
                     </select>
                   </td>
                 </tr>
               </table>
-              <button type="submit" class="btn btn-primary btn-md btn-block">保存</button>
+              <button type="submit" class="btn btn-primary btn-md btn-block" style="margin-top: 10px;" [disabled]="!inputOutPriceForm.valid">保存</button>
             </div>
           </form>
         </div>
         <div class="tab_content" id="programming_content">
-          <form (ngSubmit)="inputExpenses(SystemConst.PaymentType.INCOME)" #signupForm="ngForm">
+          <form (ngSubmit)="inputExpenses(SystemConst.PaymentType.INCOME)" #inputInPriceForm="ngForm">
             <div class="tab_content_description">
               <table>
                 <tr>
                   <td><label>収入金額 ¥</label></td>
                   <td>
                     <div class="form-group">
-                      <input type="number" name="number" [(ngModel)]="inputDetail.price" required>
+                      <input type="number" name="number" min="0" maxlength="9" [(ngModel)]="inputDetail.price"
+                             oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                             required>
                     </div>
                   </td>
                 </tr>
                 <tr>
                   <td><label>項目</label></td>
                   <td>
-                    <select name="example" [(ngModel)]="inputDetail.category">
+                    <select name="category" [(ngModel)]="inputDetail.category" required>
                       <option *ngFor="let name of categories" [ngValue]="name">{{name}}</option>
                     </select>
                   </td>
                 </tr>
               </table>
-              <button type="submit" class="btn btn-primary btn-md btn-block">保存</button>
+              <button type="submit" class="btn btn-primary btn-md btn-block" style="margin-top: 10px;" [disabled]="!inputInPriceForm.valid">保存</button>
             </div>
           </form>
         </div>

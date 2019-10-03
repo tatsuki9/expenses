@@ -32,11 +32,17 @@ export class AuthComponent implements OnInit {
     private authService: AuthService
   ) { }
 
+  /**
+   * @brief メールアドレス検証
+   * @param control Object
+   */
   static emailValidator(control: FormControl) {
     return /^([a-zA-Z0-9])+([a-zA-Z0-9\._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9\._-]+)+$/g.test(control.value) ? null : {notAllowed: true}
   }
 
-  // ログイン処理
+  /**
+   * @brief ログイン処理
+   */
   login() {
     this.authService.login(this.user.email, this.user.password)
       .then((res) => {
@@ -52,7 +58,9 @@ export class AuthComponent implements OnInit {
       });
   }
 
-  // ユーザー新規作成
+  /**
+   * @brief ユーザー新規作成
+   */
   signup() {
     this.authService.signup(this.user.username, this.user.email, this.user.password)
       .then((res) => {
@@ -65,6 +73,9 @@ export class AuthComponent implements OnInit {
       });
   }
 
+  /**
+   * @brief コンポーネント初期化、他、ダイアログ等
+   */
   ngOnInit() {
     this.sub = this.activedRoute.queryParams.subscribe(params => {
       this.authService.setRegisterCompleteNow(false);
@@ -86,11 +97,13 @@ export class AuthComponent implements OnInit {
     });
   }
 
+  /**
+   * @brief 諸々のプロパティ初期化
+   */
   init() {
     this.user.username = '';
     this.user.password = '';
     this.user.email = '';
     this.errorMes = '';
   }
-
 }

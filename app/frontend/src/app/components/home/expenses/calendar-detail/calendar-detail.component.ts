@@ -24,6 +24,9 @@ export class CalendarDetailComponent implements OnInit {
   ) {
   }
 
+  /**
+   * @brief コンポーネント初期化、他、カテゴリー一覧取得
+   */
   ngOnInit() {
     this.calendarService.getCategories()
       .then((res) => {
@@ -32,13 +35,22 @@ export class CalendarDetailComponent implements OnInit {
             this.categories.push(res['CategoryName'])
           });
         }
+        this.init();
       });
   }
 
+  /**
+   * @brief 家計簿入力ダイアログを表示した際の背景クリック時の処理
+   */
   bgClick() {
     this.calendarService.setShowDetail(false);
+    this.init();
   }
 
+  /**
+   * @brief 家計簿入力時の処理
+   * @param paymentType number
+   */
   inputExpenses(paymentType: number){
     let clickedDate = this.calendarService.getClickedDate();
     let year  = clickedDate.getFullYear();
@@ -52,12 +64,23 @@ export class CalendarDetailComponent implements OnInit {
           this.redraw();
         }
       });
+    this.init();
   }
 
+  /**
+   * @brief 強制的に再描画させる
+   */
   redraw() {
-    // 強制的に再描画させる
     if (!this.cd['destroyed']) {
       this.cd.detectChanges();
     }
+  }
+
+  /**
+   * @brief 諸々のプロパティ初期化
+   */
+  init() {
+    this.inputDetail.category = this.categories.length > 0 ? this.categories[0] : '';
+    this.inputDetail.price = 0;
   }
 }

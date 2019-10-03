@@ -16,6 +16,9 @@ type SaveDetailStruct struct {
 	Date        types.JsonTime `json:"date"`
 }
 
+/**
+ * カテゴリー一覧取得ハンドラ
+ */
 func GetCategories(w http.ResponseWriter, r *http.Request, userId int) {
 	var statusCode = http.StatusOK
 	mstCategories, err := mst.GetAllMstCategory()
@@ -33,6 +36,9 @@ func GetCategories(w http.ResponseWriter, r *http.Request, userId int) {
 	}
 }
 
+/**
+ * ユーザー家計簿一覧取得ハンドラ
+ */
 func GetUserExpenses(w http.ResponseWriter, r *http.Request, userId int) {
 	var statusCode = http.StatusOK
 	userExpenses, err := models.GetUserUserExpensesByID(userId)
@@ -50,6 +56,9 @@ func GetUserExpenses(w http.ResponseWriter, r *http.Request, userId int) {
 	}
 }
 
+/**
+ * 家計簿詳細保存ハンドラ
+ */
 func PostSaveDetail(w http.ResponseWriter, r *http.Request, userId int) {
 	var saveDetailStruct SaveDetailStruct
 	var statusCode = http.StatusOK
@@ -85,6 +94,9 @@ func PostSaveDetail(w http.ResponseWriter, r *http.Request, userId int) {
 	}
 }
 
+/**
+ * 退会処理ハンドラ
+ */
 func Leave(w http.ResponseWriter, r *http.Request, userId int) {
 	var status types.Status
 	var statusCode = http.StatusOK

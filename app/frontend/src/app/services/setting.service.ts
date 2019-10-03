@@ -11,10 +11,16 @@ export class SettingService {
     private http: HttpClient,
   ) { }
 
+  /**
+   * プロパティ初期化
+   */
   init() {
     this.leaveCompleteNow = false;
   }
 
+  /**
+   * 退会処理
+   */
   leave () {
     let requestBody = {};
 
@@ -29,6 +35,9 @@ export class SettingService {
       .catch(this.errorHandler);
   }
 
+  /**
+   * 退会完了フラグ取得
+   */
   getLeaveCompleteNow () {
     return this.leaveCompleteNow;
   }
