@@ -1,6 +1,7 @@
 import {ChangeDetectionStrategy, Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { AuthService } from "../../services/auth.service";
 import { SettingService } from "../../services/setting.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-navbar',
@@ -13,11 +14,25 @@ export class NavbarComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private settingService: SettingService,
+    private router: Router,
     private cd: ChangeDetectorRef
   ) {
   }
 
   ngOnInit() {
+    /**
+     * 退会フラグが立っていて、ログアウト状態の時にURL変更が掛かれば、トップページへの遷移になるので
+     * トップページのコンテンツ表示するため予めここで退会フラグを落としておく。
+     * 理由: 退会フラグが立っていると、この後ngDoCheckが呼ばれる際に再描画処理が走らなくなってしまうため。
+     * (退会フラグが立ったままだとif ( !this.settingService.getLeaveCompleteNow()の条件に入らないので。)
+     */
+    this.router.events.subscribe((val)=>{
+      if (this.settingService.getLeaveCompleteNow() && !this.authService.isLoggedIn()) {
+        if (!this.authService.isLoggedIn()) {
+          this.settingService.init();
+        }
+      }
+    });
   }
 
   ngDoCheck() {
@@ -28,10 +43,6 @@ export class NavbarComponent implements OnInit {
     if ( !this.settingService.getLeaveCompleteNow()
     ) {
       this.redraw();
-    }
-
-    if (!this.authService.isLoggedIn()) {
-      this.settingService.init();
     }
   }
 
