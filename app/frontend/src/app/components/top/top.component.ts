@@ -13,7 +13,7 @@ import { Router } from "@angular/router";
 export class TopComponent implements OnInit {
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private settingService: SettingService,
     private router: Router,
     private cd: ChangeDetectorRef

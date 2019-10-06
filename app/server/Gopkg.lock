@@ -18,6 +18,14 @@
   version = "v1.4.1"
 
 [[projects]]
+  digest = "1:b117faf01abdbdadd7b8ceeae74cd1369c1b073fef41aee8b674c9d704a54c16"
+  name = "github.com/gorilla/handlers"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "8a3748addc242fc560bd6d4ff28b0374c010b1b4"
+  version = "v1.4.2"
+
+[[projects]]
   digest = "1:cbec35fe4d5a4fba369a656a8cd65e244ea2c743007d8f6c1ccb132acf9d1296"
   name = "github.com/gorilla/mux"
   packages = ["."]
@@ -26,20 +34,12 @@
   version = "v1.7.3"
 
 [[projects]]
-  digest = "1:e72d1ebb8d395cf9f346fd9cbc652e5ae222dd85e0ac842dc57f175abed6d195"
-  name = "github.com/gorilla/securecookie"
+  branch = "master"
+  digest = "1:446f04b6b59c2cfacf8e9784c431afda6708d72a7a09eaefb2ab96d2b9cf8536"
+  name = "github.com/jessevdk/go-assets"
   packages = ["."]
   pruneopts = "UT"
-  revision = "e59506cc896acb7f7bf732d4fdf5e25f7ccd8983"
-  version = "v1.1.1"
-
-[[projects]]
-  digest = "1:172c862eabc72e90f461bcef223c49869628bec6d989386dfb03281ae3222148"
-  name = "github.com/gorilla/sessions"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "4355a998706e83fe1d71c31b07af94e34f68d74a"
-  version = "v1.2.0"
+  revision = "4f4301a06e153ff90e17793577ab6bf79f8dc5c5"
 
 [[projects]]
   digest = "1:ecd9aa82687cf31d1585d4ac61d0ba180e42e8a6182b85bd785fcca8dfeefc1b"
@@ -68,16 +68,26 @@
   revision = "5f2a59506353b8d5ba8cbbcd9f3c1f41f1eaf079"
   version = "v1.6.2"
 
+[[projects]]
+  digest = "1:59f10c1537d2199d9115d946927fe31165959a95190849c82ff11e05803528b0"
+  name = "gopkg.in/yaml.v2"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "f221b8435cfb71e54062f6c6e99e9ade30b124d5"
+  version = "v2.2.4"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
     "github.com/dgrijalva/jwt-go",
     "github.com/go-sql-driver/mysql",
+    "github.com/gorilla/handlers",
     "github.com/gorilla/mux",
-    "github.com/gorilla/sessions",
+    "github.com/jessevdk/go-assets",
     "github.com/joho/godotenv",
     "golang.org/x/crypto/bcrypt",
+    "gopkg.in/yaml.v2",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private activeRoute: ActivatedRoute,
-    private authService: AuthService,
+    public authService: AuthService,
     private router: Router,
   ) { }
 

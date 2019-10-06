@@ -3,39 +3,31 @@ services:
   backend-app:
     build:
       context: $PWD/app/server
-      target: builder
       args:
-      - PARAMETER_1=dev
-      - PARAMETER_2=localhost:4200
-    image: centos/golang-app-dev
+      - PARAMETER_1=production
+      - PARAMETER_2=52.192.233.244
+    image: centos/golang-app-prd
     container_name: expenses-golang-app
     tty: true
     ports:
       - 8080:8080
-    volumes:
-      - $PWD/app/server:/home/go/src/expenses
     environment:
       - TZ=Asia/Tokyo
   frontend-app:
     build:
       context: $PWD/app/frontend
-      target: builder
       args:
-        - PARAMETER_1=dev
-    image: centos/angular-app-dev
+      - PARAMETER_1=production
+    image: centos/angular-app-prd
     container_name: expenses-angular-app
     tty: true
     ports:
-    - 4200:4200
-    volumes:
-    - $PWD/app/frontend:/home/frontend
+    - 80:80
     environment:
     - TZ=Asia/Tokyo
   db:
     image: project-first/mysql
     container_name: expenses-db
-    environment:
-      MYSQL_ROOT_PASSWORD: 'root'
     ports:
     - 3306:3306
     volumes:

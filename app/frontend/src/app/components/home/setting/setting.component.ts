@@ -10,7 +10,7 @@ import {AuthService} from "../../../services/auth.service";
 export class SettingComponent implements OnInit {
 
   constructor(
-    private settingService: SettingService,
+    public settingService: SettingService,
     private authService: AuthService,
     private cd: ChangeDetectorRef
   ) { }

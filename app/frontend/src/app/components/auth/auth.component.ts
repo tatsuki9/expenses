@@ -29,7 +29,7 @@ export class AuthComponent implements OnInit {
   constructor(
     private activedRoute: ActivatedRoute,
     private router: Router,
-    private authService: AuthService
+    public authService: AuthService
   ) { }
 
   /**

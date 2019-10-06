@@ -1,0 +1,11 @@
+driver: mysql
+dev:
+  user: root
+  password: root
+  host: db
+  db: expenses
+production:
+  user: root
+  password: root
+  host: db
+  db: expenses

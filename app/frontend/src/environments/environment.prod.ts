@@ -1,3 +1,5 @@
 export const environment = {
-  production: true
+  production: true,
+  host: 'http://52.192.233.244',
+  port: '8080',
 };

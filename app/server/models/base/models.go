@@ -1,8 +1,12 @@
 package base
 
 import (
+	"bytes"
 	"database/sql"
+	"io"
+	"gopkg.in/yaml.v2"
 	_ "github.com/go-sql-driver/mysql"
+	"expenses/conf"
 	"log"
 	"os"
 	"sync"
@@ -19,7 +23,22 @@ var err error
 func GetInstance() *Database {
 
 	once.Do(func(){
-		dbinfo := os.Getenv("DATABASE_URL")
+
+		f, err := conf.Assets.Open("/conf/db.yml")
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+
+		by := new(bytes.Buffer)
+		io.Copy(by, f)
+		buf := by.Bytes()
+
+		t := make(map[interface{}]interface{})
+		_ = yaml.Unmarshal(buf, &t)
+
+		conn := t[os.Getenv("APP_ENV")].(map[interface{}]interface{})
+		dbinfo := conn["user"].(string) + ":" + conn["password"].(string) + "@tcp(" + conn["host"].(string) + ":3306)/" + conn["db"].(string) + "?parseTime=true"
 		if dbinfo == "" {
 			log.Fatal("Error loading database info from env")
 		}

@@ -1,5 +1,4 @@
-# centos
-FROM centos:centos7
+FROM centos:centos7 as builder
 
 MAINTAINER Tatsuki Nakagawa <tatsukinakagawa14@gmail.com>
 
@@ -23,13 +22,16 @@ RUN npm install -g typescript && \
     npm install -g typings && \
     npm install -g @angular/cli
 
-# golang install
-RUN wget --no-check-certificate -O - http://golang.org/dl/go1.12.linux-amd64.tar.gz | tar xzf - -C /usr/local
+WORKDIR /home/frontend
+COPY package*.json /home/frontend/
+RUN npm install
+COPY ./ /home/frontend/
+ARG PARAMETER_1
+RUN npm run build -- --output-path=./dist/out --configuration ${PARAMETER_1}
 
-# dep
-RUN mkdir /home/go
-RUN mkdir /home/go/bin
-ENV GOPATH=/home/go
-ENV GOROOT=/usr/local/go
-ENV PATH=$PATH:$GOPATH/bin:$GOROOT/bin
-RUN curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
+FROM nginx:1.15 as prod
+#Copy ci-dashboard-dist
+COPY --from=builder /home/frontend/dist/out/ /usr/share/nginx/html
+#Copy default nginx configuration
+COPY ./nginx/nginx-custom.conf /etc/nginx/conf.d/default.conf

@@ -19,7 +19,7 @@ export class CalendarDetailComponent implements OnInit {
   readonly SystemConst = SystemConst;
 
   constructor(
-    private calendarService: CalendarService,
+    public calendarService: CalendarService,
     private cd: ChangeDetectorRef
   ) {
   }
