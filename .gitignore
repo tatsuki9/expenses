@@ -1,3 +1,4 @@
 app/server/vendor/
 mysql/volumes/
+app/server/.env
 .idea/
